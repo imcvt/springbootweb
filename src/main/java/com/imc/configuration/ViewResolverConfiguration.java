@@ -7,43 +7,39 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
-/**
- * @author luoly
- * @date 2018/12/21 17:30
- * @description 多视图解析器，可以同时支持后台返回html，jsp
- * 关键点有两个：
- * 1、配置order属性
- * 2、配置viewnames属性
- *
- * 注意：
- * return new ModelAndView("jsps/index");//或者return "jsps/index"
- * 对应 /WEB-INF/jsps/index.jsp
- * ==========================
- * 同理：
- * return "thymeleaf/index";//或者return “thymeleaf/index”
- * 对应 /WEB-INF/thymeleaf/index.html
- */
 @Configuration
 public class ViewResolverConfiguration {
 
-    @Configuration//用来定义 DispatcherServlet 应用上下文中的 bean
+
+    /**
+     * 自定义视图解析器，支持springboot中的jsp和html页面
+     * jsp关键点：
+     * 1、配置order属性
+     * 2、配置viewnames属性
+     *
+     * 注意：
+     * return new ModelAndView("jsp/index");//或者return "jsp/index"
+     * 对应 /webapp/WEB-INF/jsp/index.jsp
+     * ==========================
+     * 同理：
+     * return "thymeleaf/index";//或者return “thymeleaf/index”
+     * 对应 /webapp/WEB-INF/thymeleaf/index.html
+     */
+    @Configuration
     @EnableWebMvc
     @ComponentScan("com.imc")
-    public class WebConfig extends WebMvcConfigurerAdapter {
+    public class WebConfig implements WebMvcConfigurer {
         @Bean
         public ViewResolver viewResolver() {
             InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-//            resolver.setPrefix("/WEB-INF/");
-//            resolver.setSuffix(".jsp");
-//            resolver.setViewNames("jsps/*");
-            resolver.setPrefix("/");
+            resolver.setPrefix("/WEB-INF/");
             resolver.setSuffix(".jsp");
             resolver.setViewNames("*");
             resolver.setOrder(2);
@@ -54,7 +50,7 @@ public class ViewResolverConfiguration {
         public ITemplateResolver templateResolver() {
             SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
             templateResolver.setTemplateMode("HTML5");
-            templateResolver.setPrefix("/templates/");
+            templateResolver.setPrefix("/WEB-INF/");
             templateResolver.setSuffix(".html");
             templateResolver.setCharacterEncoding("utf-8");
             templateResolver.setCacheable(false);
@@ -75,8 +71,7 @@ public class ViewResolverConfiguration {
             viewResolver.setTemplateEngine(templateEngine());
             viewResolver.setCharacterEncoding("utf-8");
             viewResolver.setOrder(1);
-            //viewResolver.setViewNames(new String[]{"thyme/*"});
-            viewResolver.setViewNames(new String[]{"thymeleaf/*","vue/*"});
+            viewResolver.setViewNames(new String[]{"html/*", "vue/*"});
             return viewResolver;
         }
 
@@ -87,7 +82,9 @@ public class ViewResolverConfiguration {
 
         @Override
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
-            super.addResourceHandlers(registry);
+            registry.addResourceHandler("/img/**").addResourceLocations("/img/");
+            //指定静态资源路径js
+            registry.addResourceHandler("/static/**").addResourceLocations("/WEB-INF/" + "/static/");
         }
     }
 }

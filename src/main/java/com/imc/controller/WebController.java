@@ -1,8 +1,8 @@
 package com.imc.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -18,9 +18,10 @@ public class WebController {
      * modelandview的方式返回test1.html
      * @return
      */
-    @RequestMapping("/m1")
-    public ModelAndView m1() {
-        ModelAndView modelAndView = new ModelAndView("test1");
+    @RequestMapping("/html1")
+    public ModelAndView html1(Model model) {
+        ModelAndView modelAndView = new ModelAndView("html/test1");
+        model.addAttribute("background","我是从后台传过来的");
         return modelAndView;
     }
 
@@ -28,8 +29,18 @@ public class WebController {
      * 直接返回test1.html
      * @return
      */
-    @RequestMapping("/m2")
-    public String m2() {
-        return "test1";
+    @RequestMapping("/html2")
+    public String html2() {
+        return "html/test1";
+    }
+
+    /**
+     * 返回testJsp
+     * @return
+     */
+    @RequestMapping("/jsp1")
+    public String jsp1(Model model) {
+        model.addAttribute("background", "this is index jsp page");
+        return "jsp/testJsp";
     }
 }

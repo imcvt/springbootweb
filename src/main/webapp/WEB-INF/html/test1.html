@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--引入jQuery-->
+    <script src="../static/jquery-2.1.1.min.js"></script>
+
+    <meta charset="UTF-8">
+    <title>Test1</title>
+    <script>
+        function f1() {
+            var inputValue = $("#input1").val();
+            alert("输入的值为："+inputValue);
+        }
+    </script>
+</head>
+<body>
+    <h1>Hello World !</h1>
+    <p th:text="${background}">default message</p>
+    <input id="input1" name="input1" value="" />
+    <input type="button" id="btn" name="btn" value="点我" onclick="f1()"/>
+</body>
+</html>
