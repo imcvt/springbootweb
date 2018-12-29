@@ -5,6 +5,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author luoly
  * @date 2018/12/21 16:24
@@ -21,7 +24,11 @@ public class WebController {
     @RequestMapping("/html1")
     public ModelAndView html1(Model model) {
         ModelAndView modelAndView = new ModelAndView("html/test1");
-        model.addAttribute("background","我是从后台传过来的");
+        model.addAttribute("str","我是从后台传过来的");
+
+        Map<String, String> map = new HashMap<>();
+        map.put("mKey", "mValue");
+        model.addAttribute("obj",map);
         return modelAndView;
     }
 

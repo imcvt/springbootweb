@@ -15,7 +15,7 @@
     <h2>
         I am a JSP -_-||
         <br/>
-        ${background}
+        ${str}
     </h2>
 </body>
 </html>
