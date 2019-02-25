@@ -14,6 +14,9 @@ public class MyDigest {
         my.testDigest();
     }
 
+    /**
+     * 加密
+     */
     public void testDigest() {
         try {
             String myinfo = "我的测试信息";
