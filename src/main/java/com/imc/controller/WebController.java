@@ -19,7 +19,7 @@ public class WebController {
 
     /**
      * modelandview的方式返回test1.html
-     * @return
+     * @return 1
      */
     @RequestMapping("/html1")
     public ModelAndView html1(Model model) {
