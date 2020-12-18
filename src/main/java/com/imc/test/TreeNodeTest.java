@@ -1,5 +1,8 @@
 package com.imc.test;
 
+import org.springframework.util.StringUtils;
+
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,13 +12,27 @@ import java.util.Map;
  * @description
  */
 public class TreeNodeTest {
+    static String preVal;
+    static String afVal;
     public static void main(String[] args) {
         TreeNode treeNode = init();
 
-        f(treeNode);
+        DoubleLinkNode node = new DoubleLinkNode("");
+        f(treeNode, node);
 
-        String a = "abcdfsdfadfasdfadfadf";
-        System.out.println(a.hashCode());
+        Convert convert = new Convert();
+        treeNode = convert.treeConvertListOfCircle(treeNode);
+
+        printLinkNode(treeNode);
+
+    }
+
+    public static void printLinkNode(TreeNode node) {
+        if(node == null)
+            return;
+        System.out.print(node.value+",");
+
+        printLinkNode(node.right);
     }
 
     public static TreeNode init() {
@@ -33,13 +50,16 @@ public class TreeNodeTest {
     }
 
     //先：头左右  中：左头右 后：左右头
-    public static void f(TreeNode treeNode) {
+    public static void f(TreeNode treeNode, DoubleLinkNode node) {
         if(treeNode == null)
             return;
 
-        System.out.println(treeNode.value);
-        f(treeNode.left);
-        f(treeNode.right);
+        System.out.print(treeNode.value);
+        f(treeNode.left, node);
+//        node.val = treeNode.value;
+//        if(!StringUtils.isEmpty(preVal))
+//        preVal = treeNode.value;
+        f(treeNode.right, node);
 
     }
 }
@@ -51,4 +71,14 @@ class TreeNode{
     String value;
     TreeNode left;
     TreeNode right;
+}
+
+class DoubleLinkNode{
+    String val;
+    public DoubleLinkNode(String val) {
+        this.val = val;
+    }
+
+    DoubleLinkNode pre;
+    DoubleLinkNode after;
 }
