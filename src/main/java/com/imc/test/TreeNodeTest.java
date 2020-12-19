@@ -2,9 +2,7 @@ package com.imc.test;
 
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author luoly
@@ -18,8 +16,8 @@ public class TreeNodeTest {
         TreeNode treeNode = init();
 
         DoubleLinkNode node = new DoubleLinkNode("");
-        f(treeNode, node);
-
+//        f(treeNode, node);
+        f1(treeNode);
         Convert convert = new Convert();
         treeNode = convert.treeConvertListOfCircle(treeNode);
 
@@ -61,6 +59,56 @@ public class TreeNodeTest {
 //        preVal = treeNode.value;
         f(treeNode.right, node);
 
+    }
+
+    public List<Integer> f0(TreeNode head) {
+         List<Integer> list=new ArrayList<Integer>();
+         Stack<TreeNode> stack=new Stack<TreeNode>();
+         if (head!=null) {
+             while(head!=null||!stack.empty()) {
+                 if(head!=null) {
+                     stack.push(head);
+                     head=head.left;
+                 }else {
+                     head=stack.pop();
+                     System.out.println(head.value);
+                     head=head.right;
+                 }
+             }
+         }
+         return list;
+     }
+
+    public static void f1(TreeNode treeNode) {
+        Stack<TreeNode> stack = new Stack<>();
+        if(treeNode == null)
+            return;
+        stack.push(treeNode);
+        while(!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+            System.out.println(node.value);
+            if(node.right != null)
+                stack.push(node.right);
+            if(node.left != null)
+                stack.push(node.left);
+        }
+    }
+
+    public static void f2(TreeNode treeNode) {
+        Stack<TreeNode> stack = new Stack<>();
+
+        TreeNode r = treeNode;
+        while (r != null || !stack.isEmpty()) {
+            while (r != null) {
+                stack.push(r);
+                r = r.left;
+            }
+            r = stack.pop();
+
+            System.out.println(r.value);
+
+            r = r.right;
+        }
     }
 }
 
