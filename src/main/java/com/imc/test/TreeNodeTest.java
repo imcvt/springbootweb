@@ -16,8 +16,8 @@ public class TreeNodeTest {
         TreeNode treeNode = init();
 
         DoubleLinkNode node = new DoubleLinkNode("");
-//        f(treeNode, node);
-        f1(treeNode);
+        f(treeNode);
+//        f1(treeNode);
         Convert convert = new Convert();
         treeNode = convert.treeConvertListOfCircle(treeNode);
 
@@ -48,16 +48,16 @@ public class TreeNodeTest {
     }
 
     //先：头左右  中：左头右 后：左右头
-    public static void f(TreeNode treeNode, DoubleLinkNode node) {
+    public static void f(TreeNode treeNode) {
         if(treeNode == null)
             return;
 
         System.out.print(treeNode.value);
-        f(treeNode.left, node);
+        f(treeNode.left);
 //        node.val = treeNode.value;
 //        if(!StringUtils.isEmpty(preVal))
 //        preVal = treeNode.value;
-        f(treeNode.right, node);
+        f(treeNode.right);
 
     }
 
