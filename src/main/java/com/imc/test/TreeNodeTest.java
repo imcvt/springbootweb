@@ -61,6 +61,7 @@ public class TreeNodeTest {
 
     }
 
+    //非递归中序遍历
     public List<Integer> f0(TreeNode head) {
          List<Integer> list=new ArrayList<Integer>();
          Stack<TreeNode> stack=new Stack<TreeNode>();
@@ -79,6 +80,7 @@ public class TreeNodeTest {
          return list;
      }
 
+     //非递归先序遍历
     public static void f1(TreeNode treeNode) {
         Stack<TreeNode> stack = new Stack<>();
         if(treeNode == null)
@@ -94,6 +96,7 @@ public class TreeNodeTest {
         }
     }
 
+    //非递归先序遍历
     public static void f2(TreeNode treeNode) {
         Stack<TreeNode> stack = new Stack<>();
 
@@ -108,6 +111,21 @@ public class TreeNodeTest {
             System.out.println(r.value);
 
             r = r.right;
+        }
+    }
+
+    //非递归后序遍历 1,3,7,6,2,5,4；反过来输出即可
+    public static void back(TreeNode treeNode) {
+        Stack<TreeNode> stack = new Stack<>();
+        Stack<TreeNode> stack1 = new Stack<>();
+        stack.push(treeNode);
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+            stack1.push(node);
+            if(node.left != null)
+                stack1.push(node.left);
+            if(node.right != null)
+                stack1.push(node.right);
         }
     }
 }
