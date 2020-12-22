@@ -3,6 +3,7 @@ package com.imc.test;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * @author luoly
@@ -15,12 +16,12 @@ public class TreeNodeTest {
     public static void main(String[] args) {
         TreeNode treeNode = init();
 
-        DoubleLinkNode node = new DoubleLinkNode("");
         f(treeNode);
 //        f1(treeNode);
-        Convert convert = new Convert();
-        treeNode = convert.treeConvertListOfCircle(treeNode);
+//        Convert convert = new Convert();
+//        treeNode = convert.treeConvertListOfCircle(treeNode);
 
+        inOrderBSTree(treeNode);
         printLinkNode(treeNode);
 
     }
@@ -33,18 +34,63 @@ public class TreeNodeTest {
         printLinkNode(node.right);
     }
 
+    //数组构造二叉树[4,2,5,1,3,6,7]
+    public static TreeNode arrayToTree(String[] arr,int start,int end){
+        TreeNode root = null;
+        if(end >= start){
+            root = new TreeNode("");
+            int mid = (start + end + 1)/2;
+            //二叉树根节点为数组中间的元素
+            root.value = arr[mid];//arr[3]=1
+            //递归方法用左半部分数组构造root的左子树[1],0, 2
+            root.left = arrayToTree(arr,start,mid-1);
+            //递归方法用右半部分数组构造root的右子树
+            root.right = arrayToTree(arr,mid+1,end);
+        }else{
+            root = null;
+        }
+        return root;
+    }
+
+    //双向链表头结点
+    private static TreeNode pHead = null;
+    //双向链表尾结点
+    private static TreeNode pEnd = null;
+    public static void inOrderBSTree(TreeNode root){
+        if(root == null){
+            return;
+        }
+        //转换root的左子树
+        inOrderBSTree(root.left);
+        //使当前结点的左孩子指向双向链表中最后一个结点
+        root.left = pEnd;
+        //双向链表为空，当前遍历的结点为双向链表的头结点
+        if(pEnd == null){
+            pHead = root;
+        }else {
+            //使双向链表中最后一个结点的右孩子指向当前结点
+            pEnd.right = root;
+        }
+        //将当前结点设为双向链表中最后一个结点
+        pEnd = root;
+        //转换root的右子树
+        inOrderBSTree(root.right);
+    }
+
     public static TreeNode init() {
-        TreeNode t1 = new TreeNode("1");
-        t1.left = new TreeNode("2");
-        t1.right = new TreeNode("3");
-
-        t1.left.left = new TreeNode("4");
-        t1.left.right = new TreeNode("5");
-
-        t1.right.left = new TreeNode("6");
-        t1.right.right = new TreeNode("7");
-
-        return t1;
+//        TreeNode t1 = new TreeNode("1");
+//        t1.left = new TreeNode("2");
+//        t1.right = new TreeNode("3");
+//
+//        t1.left.left = new TreeNode("4");
+//        t1.left.right = new TreeNode("5");
+//
+//        t1.right.left = new TreeNode("6");
+//        t1.right.right = new TreeNode("7");
+//
+//        return t1;
+        String s[] = {"4","2","5","1","6","3","7"};
+        return arrayToTree(s, 0, s.length-1);
     }
 
     //先：头左右  中：左头右 后：左右头
@@ -126,6 +172,22 @@ public class TreeNodeTest {
                 stack1.push(node.left);
             if(node.right != null)
                 stack1.push(node.right);
+        }
+    }
+
+    //非递归平行打印二叉树
+    public static void parell(TreeNode treeNode) {
+        Queue<TreeNode> queue = new LinkedBlockingQueue<>();
+        queue.add(treeNode);
+        while (!queue.isEmpty()) {
+
+            TreeNode poll = queue.poll();
+            System.out.print(poll.value+"=>");
+            if(poll.left != null)
+                queue.add(poll.left);
+
+            if(poll.right != null)
+                queue.add(poll.right);
         }
     }
 }
