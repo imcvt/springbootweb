@@ -1,10 +1,8 @@
 package com.imc.test.sort;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * @author luoly
@@ -12,7 +10,8 @@ import java.util.Map;
  * @description
  */
 public class QuickSort {
-    public static void main(String[] args) {
+    static ExecutorService executorService = Executors.newFixedThreadPool(2);
+    public static void main(String[] args){
         int[] a = {1,6,4,3,8,5,2,7};
         quicksort(a, 0, 7);
         System.out.println(Arrays.toString(a));
@@ -20,6 +19,9 @@ public class QuickSort {
 //        int b[] = { 49, 38, 65, 97, 76, 13, 27, 49 };
 //        quickSort2(a);
 //        System.out.println(Arrays.toString(a));
+
+        System.out.println(18%16);//2
+        System.out.println(18%32);//18
 
     }
 

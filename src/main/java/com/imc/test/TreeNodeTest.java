@@ -3,6 +3,8 @@ package com.imc.test;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -15,14 +17,14 @@ public class TreeNodeTest {
     static String afVal;
     public static void main(String[] args) {
         TreeNode treeNode = init();
-
+//pp1(treeNode);
         f(treeNode);
 //        f1(treeNode);
 //        Convert convert = new Convert();
 //        treeNode = convert.treeConvertListOfCircle(treeNode);
 
-        inOrderBSTree(treeNode);
-        printLinkNode(treeNode);
+//        inOrderBSTree(treeNode);
+//        printLinkNode(treeNode);
 
     }
 
@@ -36,6 +38,7 @@ public class TreeNodeTest {
 
     //数组构造二叉树[4,2,5,1,3,6,7]
     public static TreeNode arrayToTree(String[] arr,int start,int end){
+        //{"8","4","9","2","10","5","11","1","12","6","13","3","14","7","15"}
         TreeNode root = null;
         if(end >= start){
             root = new TreeNode("");
@@ -77,6 +80,34 @@ public class TreeNodeTest {
         inOrderBSTree(root.right);
     }
 
+    public static void pp(TreeNode treeNode) {
+        if(treeNode == null)
+            return;
+        if(treeNode.left != null)
+            pp(treeNode.left);
+        System.out.print(treeNode.value);
+        if(treeNode.right != null)
+            pp(treeNode.right);
+    }
+
+    public static void pp1(TreeNode treeNode) {
+        //1.对象引用temp的值
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode temp = treeNode;
+        while (temp != null || !stack.isEmpty()){
+            if(temp != null) {
+                stack.push(temp);
+                temp = temp.left;
+            }else {
+                temp = stack.pop();
+                System.out.print(temp.value);
+                temp = temp.right;
+            }
+        }
+//        Hashtable h=  new Hashtable();
+//        h.put()
+    }
+
     public static TreeNode init() {
 //        TreeNode t1 = new TreeNode("1");
 //        t1.left = new TreeNode("2");
@@ -89,7 +120,8 @@ public class TreeNodeTest {
 //        t1.right.right = new TreeNode("7");
 //
 //        return t1;
-        String s[] = {"4","2","5","1","6","3","7"};
+//        String s[] = {"4","2","5","1","6","3","7"};
+        String s[] = {"8","4","9","2","10","5","11","1","12","6","13","3","14","7","15"};
         return arrayToTree(s, 0, s.length-1);
     }
 
@@ -107,7 +139,7 @@ public class TreeNodeTest {
 
     }
 
-    //非递归中序遍历
+    //非递归中序遍历4 2 5 1 6 3 7
     public List<Integer> f0(TreeNode head) {
          List<Integer> list=new ArrayList<Integer>();
          Stack<TreeNode> stack=new Stack<TreeNode>();
