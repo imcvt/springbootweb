@@ -1,5 +1,8 @@
 package com.imc.test;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,16 +73,25 @@ public class TestLinkTable {
     }
 
     public static void main(String[] args) {
-        ListNode l1 = new ListNode(1);
-        l1.next = new ListNode(2);
-        l1.next.next = new ListNode(3);
-        l1.next.next.next = new ListNode(4);
-        l1.next.next.next.next = new ListNode(5);
-//        printListFromTailToHead(l1);
-        ListNode res = reverseLinkTb1(l1);
-        while (res != null) {
-            System.out.println(res.val);
-            res = res.next;
+//        ListNode l1 = new ListNode(1);
+//        l1.next = new ListNode(2);
+//        l1.next.next = new ListNode(3);
+//        l1.next.next.next = new ListNode(4);
+//        l1.next.next.next.next = new ListNode(5);
+////        printListFromTailToHead(l1);
+//        ListNode res = reverseLinkTb1(l1);
+//        while (res != null) {
+//            System.out.println(res.val);
+//            res = res.next;
+//        }
+        try {
+            Field field = TestLinkTable.class.getDeclaredField("arrayList");
+            ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+            System.out.println(parameterizedType.getRawType());
+            System.out.println(parameterizedType.getActualTypeArguments()[0]);
+
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
         }
     }
 
