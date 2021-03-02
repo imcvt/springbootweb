@@ -1,7 +1,11 @@
 package com.imc.test;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 帮助理解，A=A+B,B=B+C,C=C+D,A=A+B+C+D,自身+调用自身的返回值
@@ -15,6 +19,41 @@ public class TestLinkTable {
             printListFromTailToHead(listNode.next);
         }
         System.out.println(arrayList);
+    }
+
+    public static ListNode reverseLinkTb(ListNode listNode) {
+        if(listNode == null || listNode.next == null)
+            return listNode;
+        ListNode pre = listNode,cur=listNode.next,temp;
+        while (cur != null) {
+            temp = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = temp;
+        }
+        listNode.next = null;
+        return pre;
+    }
+
+    public static ListNode reverseLinkTb1(ListNode head) {
+        if(head == null || head.next == null)
+            return head;
+        //1 2 3 4 5 null
+        //1 2 3 4 null 4
+        ListNode last = reverseLinkTb1(head.next);
+        head.next.next = head;// 变成了 5 -> 4 但是4的指针仍然指向5 也就是双向的
+        head.next = null;
+        return last;
+    }
+
+    public static ListNode reverseLink02(ListNode listNode) {
+        if(listNode == null || listNode.next == null)
+            return listNode;
+
+        ListNode last = reverseLink02(listNode.next);
+        listNode.next.next = listNode;
+        listNode.next = null;
+        return last;
     }
 
     public static ArrayList<Integer> printListFromTailToHead2(ListNode listNode) {
@@ -34,10 +73,26 @@ public class TestLinkTable {
     }
 
     public static void main(String[] args) {
-        ListNode l1 = new ListNode(1);
-        l1.next = new ListNode(2);
-        l1.next.next = new ListNode(3);
-        printListFromTailToHead(l1);
+//        ListNode l1 = new ListNode(1);
+//        l1.next = new ListNode(2);
+//        l1.next.next = new ListNode(3);
+//        l1.next.next.next = new ListNode(4);
+//        l1.next.next.next.next = new ListNode(5);
+////        printListFromTailToHead(l1);
+//        ListNode res = reverseLinkTb1(l1);
+//        while (res != null) {
+//            System.out.println(res.val);
+//            res = res.next;
+//        }
+        try {
+            Field field = TestLinkTable.class.getDeclaredField("arrayList");
+            ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+            System.out.println(parameterizedType.getRawType());
+            System.out.println(parameterizedType.getActualTypeArguments()[0]);
+
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void p(ListNode listNode) {
