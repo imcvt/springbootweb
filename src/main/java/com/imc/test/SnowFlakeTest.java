@@ -24,6 +24,7 @@ public class SnowFlakeTest {
     //每毫秒内产生的id数 2 的 12次方
     private long sequenceBits = 12L;
     // 这个是二进制运算，就是5 bit最多只能有31个数字，也就是说机器id最多只能是32以内
+    //-1L （000..001-> 111...110->+1->111...111） ^ 000...(12个0)=12个1=2的12次方-1
     private long maxWorkerId = -1L ^ (-1L << workerIdBits);
     // 这个是一个意思，就是5 bit最多只能有31个数字，机房id最多只能是32以内
     private long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
