@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 /**
  * @author luoly
@@ -25,8 +26,43 @@ import java.util.concurrent.*;
 public class TestCompletableFu {
     public static void main(String[] args) {
 //        thenApply();
-        testCombine();
+//        testCombine();
 //        testAcceptBoth();
+        testParell();
+    }
+
+
+    private static void testParell() {
+        CompletableFuture<String> priceOfTM = CompletableFuture.supplyAsync(() -> {
+            System.out.println("1");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            return "1";
+        });
+        CompletableFuture<String> priceOfJD = CompletableFuture.supplyAsync(() -> {
+            System.out.println("2");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "1";
+        });
+        CompletableFuture<String> priceOfTB = CompletableFuture.supplyAsync(() -> {
+            System.out.println("3");
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "1";
+        });
+        CompletableFuture.allOf(priceOfJD,priceOfTB,priceOfTM).join();
+        System.out.println("执行完毕");
     }
 
     public static void testCombine() {
