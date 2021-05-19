@@ -1,6 +1,10 @@
 package com.imc.test;
 
+import com.sun.xml.internal.ws.util.CompletedFuture;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -26,27 +30,36 @@ public class TestCompletableFu {
     }
 
     public static void testCombine() {
-            String result = CompletableFuture.supplyAsync(() -> {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return "hello";
-            }).thenCombine(CompletableFuture.supplyAsync(() -> {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                int a = 10/0;
-                return "world";
-            }), (s1, s2) -> s1 + " " + s2)
-            .exceptionally(e -> {
-                System.out.println(e.getMessage());
-                return "异常走这儿";
-            }).join();
-            System.out.println(result);
+        //循环调用
+        CompletableFuture<List<String>> groupDtos = CompletableFuture.supplyAsync(() -> Arrays.asList("1"))
+                .thenCombine(CompletableFuture.supplyAsync(() -> Arrays.asList("2")), (l1, l2) -> {
+                    l1.addAll(l2);
+                    System.out.println("11"+l2);
+                    return l1;
+                })
+                .thenCombine(CompletableFuture.supplyAsync(() -> Arrays.asList("3")), (l1, l2) -> {l1.addAll(l2);return l1;})
+                .thenCombine(CompletableFuture.supplyAsync(() -> Arrays.asList("4")), (l1, l2) -> {l1.addAll(l2);return l1;})
+                .thenCombine(CompletableFuture.supplyAsync(() -> Arrays.asList("5")), (l1, l2) -> {l1.addAll(l2);return l1;})
+                .thenCombine(CompletableFuture.supplyAsync(() -> Arrays.asList("6")), (l1, l2) -> {l1.addAll(l2);return l1;})
+                .exceptionally(e -> Collections.emptyList());
+        try {
+            groupDtos.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        String s1 = CompletableFuture.supplyAsync(() -> "1")
+                .thenCombine(CompletableFuture.supplyAsync(() -> "2"), (l1, l2) -> {
+                    return l1+l2;
+                })
+                .thenCombine(CompletableFuture.supplyAsync(() -> "3"), (l1, l2) -> {return l1+l2;})
+//                .thenCombine(CompletableFuture.supplyAsync(() -> Arrays.asList("4")), (l1, l2) -> {l1.addAll(l2);return l1;})
+//                .thenCombine(CompletableFuture.supplyAsync(() -> Arrays.asList("5")), (l1, l2) -> {l1.addAll(l2);return l1;})
+//                .thenCombine(CompletableFuture.supplyAsync(() -> Arrays.asList("6")), (l1, l2) -> {l1.addAll(l2);return l1;})
+                .exceptionally(e -> "").join();
+            System.out.println(groupDtos);
     }
 
     public static void testAcceptBoth() {
