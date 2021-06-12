@@ -1,5 +1,12 @@
 package com.imc.test;
 
+import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 /**
  * @author luoly
  * @date 2021/1/8 15:30
@@ -19,15 +26,30 @@ public class Test {
         return in;
     }
     public static void main(String[] args) {
-        Test t = new Test();
-        System.out.println(t.a+",b="+t.b);
+//        Test t = new Test();
+//        System.out.println(t.a+",b="+t.b);
 //        int k = 10;
 //        int[] nums = {1,4,32,89,6,21,56,74,41,57,85,36,20};
 //        System.out.println("test1= " + nums[0]);
 //        quickSort(nums,10,20);
 //        System.out.println("test3= " + nums[0]);
 
+        System.out.println(t(1));
         //1
+    }
+
+    private static String t(int i) {
+        try {
+            System.out.println("try ===");
+            if(i == 1)
+                return "rturn 1";
+            return "rrrturn";
+        }catch (Exception e) {
+
+        }finally {
+            System.out.println("finlly");
+        }
+        return "456";
     }
 
     private static void quickSort(int[] sortNum, int startIndex, int endIndex)
